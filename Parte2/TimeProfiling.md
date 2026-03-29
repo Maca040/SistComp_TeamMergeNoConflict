@@ -126,8 +126,7 @@ Donde:
 - **children**: tiempo total acumulado en sus funciones hijas.
 - **called**: número de veces que la función padre llamó a la hija / el total de veces que la función hija fue llamada.
 
----
-
+--- 
 ### Conclusiones del Time Profiling
 
 El análisis con gprof nos permitió observar con precisión qué funciones consumen mayor tiempo de CPU. En este ejemplo:
