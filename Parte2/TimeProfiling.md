@@ -105,10 +105,8 @@ Adicionalmente podemos redirigir la salida a un archivo de texto para analizarla
 gprof test_gprof gmon.out > analysis.txt
 ```
 
-En este caso de ejemplo, con un procesador *Intel(R) Core(TM) i7-8750H CPU @ 2.20GHz*, el resultado fue el siguiente:
-
-![Tabla de tiempos por función gprof]()
-Los elementos de la tabla son:
+En este caso de ejemplo, con un procesador Intel(R) Core(TM) i3-8130U CPU @ 2.20GHz-16GB DDR4 3200MHz
+Los elementos de la tabla son: 
 
 - **% time**: El porcentaje del tiempo total de ejecución que el programa usó en esa función.
 - **cumulative seconds**: La suma del tiempo de ejecución de la función y las funciones que se encuentran por encima de esta en la tabla.
