@@ -131,6 +131,10 @@ A continuación se muestran los resultados obtenidos con el mismo código pero d
 
 _Figura 2: Caso del procesador AMD Ryzen 5 1600AF @ 3.20GHz/3.60Ghz - 16GB DDR4 3200MHz_
 
+![Tabla de tiempo](../Recursos/mario/img/datos.png)
+
+_Figura 3: Caso del procesador 12th Gen Intel(R) Core(TM) i5-12500H (2.50 GHz)_
+
 
 --- 
 ### Conclusiones del Time Profiling
