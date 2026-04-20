@@ -2,7 +2,6 @@ import requests
 import ctypes
 
 # --- 1. Consumo de la API REST ---
-# Usamos la misma URL exacta que tus compañeros
 url = "https://api.worldbank.org/v2/en/country/all/indicator/SI.POV.GINI?format=json&date=2011:2020&per_page=32500&page=1"
 respuesta = requests.get(url)
 datos = respuesta.json()
@@ -20,8 +19,8 @@ for registro in datos[1]:
 print(f"Dato de la API -> GINI Argentina ({anio}): {gini_argentina}")
 
 # --- 2. Llamada a la librería C ---
-# Cargamos la librería que compilamos previamente
-libcalculadora = ctypes.CDLL('/home/maca/Documentos/SIST_COMP/SistComp_TeamMergeNoConflict/TP2/sin_Assembler/libcalculadora.so')
+# Cargamos la librería que compilamos previamente usando ruta relativa (debe estar en el mismo directorio que este script)
+libcalculadora = ctypes.CDLL('./libcalculadora.so')
 
 # Le avisamos a Python que la función de C recibe un float (c_float) y devuelve un int
 libcalculadora.procesar_gini.argtypes = (ctypes.c_float,)

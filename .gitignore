@@ -1,1 +1,6 @@
+*.o
+*.so
+app_gdb
+
+__pycache__/
 .venv/
