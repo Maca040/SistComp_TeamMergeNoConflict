@@ -133,11 +133,6 @@ El descriptor de datos está marcado como **read-only**. Intentar escribir deber
 
 **Nota:** QEMU no refleja correctamente la excepción (permite escritura). En hardware real, al bootear desde pendrive, la CPU se reinicia, confirmando el comportamiento esperado.
 
-**Evidencia requerida (GDB / violación de segmento):**  
-![evidencia-modo-protegido-gdb](./images/evidencia-modo-protegido-gdb.jpg)
-
-> Si no hay captura de GDB, se puede reemplazar con evidencia del reinicio en hardware real.
-
 ### 5.3. ¿Qué valor se carga en los registros de segmento?
 Se cargan **selectores** que apuntan a entradas de la GDT. En este caso:
 - `0x08` para **código**  
