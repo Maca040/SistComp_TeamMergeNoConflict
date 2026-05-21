@@ -2,6 +2,8 @@
 **a)** Checkinstall es un programa de código abierto para sistemas operativos Unix-like que facilita la instalación y desinstalación de software compilado desde el código fuente, permitiendo que sea administrado por el sistema de gestión de paquetes nativo del sistema (APT/Dpkg en Debian/Ubuntu, RPM en Fedora/RHEL, o pkgtool en Slackware). A diferencia de make install, donde al ser ejecutado los archivos se dispersan por el sistema sin dejar registro de qué se instaló ni dónde, CheckInstall realiza un monitoreo de la instalación, es decir, intercepta el comando de instalación (como make install por ejemplo) y registra todos los archivos creados o modificados generando un paquete nativo (.deb, .rpm o Slackware) con los archivos instalados. Esto permite desinstalar el software posteriormente usando el gestor de paquetes del sistema, sin tener que buscar archivos manualmente.
 
 **b)**
+![](media/IMAGEN1.png)
+![](media/IMAGEN2.png)
 Como se puede apreciar en las dos imágenes se arma el .o con make, luego se hace uso de checkinstall que en este ejemplo se encarga empaquetar en un .deb e instalar en /usr/local/bin/ según se especificó en el makefile. Al ejecutar hola posicionado en algún directorio (home en este caso) debería ser visible en consola la respuesta (“TEAM_MERGE_NO_CONFLICT”) de nuestro programa instalado. “ls /usr/local/bin/” en este caso puntual es usado solo para mostrar el hecho de que existe “hola” una vez completada la instalación y desaparece tras la inmediata desinstalación efectuada por dpkg (“sudo dpkg -r hola-empaquetado”). Por último se intenta llamar nuevamente al programa para dejar claro que efectivamente este ya no está disponible (es un agregado un poco más visual al hecho de haberse cerciorado de que ya no estaba en /usr/local/bin/).
 
 **c)** ????
@@ -16,7 +18,7 @@ Como se puede apreciar en las dos imágenes se arma el .o con make, luego se hac
 **1)**
 En base a la imagen adjunta en la que se puede ver la salida de modinfo completa para “mimodulo.ko” y casi completa para “/lib/modules/$(uname -r)/kernel/crypto/des_generic.ko.zst” la principal diferencia que se puede observar es la existencia de alias que en el caso del módulo hecho por nosotros no tiene. Además de la longitud de la firma a favor del módulo crypto que lamentablemente no se logra apreciar en esta captura se ven diferencias en las dependencias y en el hecho de que este módulo se distribuye junto con el kernel, es decir, es parte del mismo y eso se indica en “intree: Y” que en nuestro módulo no está.  
 
-![Salida modinfo](media/IMAGEN1.png)
+![Salida modinfo](media/IMAGEN3.png)
 
   
 **2)** ???  
@@ -29,46 +31,46 @@ En caso de que un programa en espacio de usuario cometa un error el manejador de
 Para el caso del kernel cuando la MMU detecta la violación la CPU genera la excepción, el manejador del kernel examina la dirección que falló y el contexto. Como el fallo provino del propio código del kernel se invoca la función __die() (o variantes) que imprime un “Oops”, i.e., un volcado de los registros, la pila de llamadas y el estado del proceso actual. El kernel muere y se requiere un reinicio.  
 8 y 9)  
 
-![Creación con make](media/IMAGEN2.png)
+![Creación con make](media/IMAGEN4.png)
 
   
 Lo primero que se hace es ejecutar “make -C /lib/modules/6.8.0-117-generic/build M=/home/mario/Documentos/Ejercicios_Sist_Comp/TP4/MODULO_PROPIO modules” donde “6.8.0-117-generic” es el reemplazo efectivo de “$(unamed -r)”.
 
-![Generación de claves](media/IMAGEN3.png)
+![Generación de claves](media/IMAGEN5.png)
 
   
 Seguido se procede con la creación de una clave privada (MOK.priv) y un certificado público (MOK.der) para firma y verificación de módulo con “sudo openssl req -new -x509 newkey rsa:2048 -keyout MOK.priv -outform DER -out MOK.der -nodes -days 36500 -subj “/CN=Clave para modulo TMNC”/”; importante mencionar que en este paso se pide crear una clave que es necesaria más adelante. Luego se firma el módulo con “sudo /usr/src/linux-headers-$(uname -r)/scripts/sign-file sha256 ./MOK.priv ./MOK.der mimodulo.ko” indicando que se usa cifrado sha256.  
 
-![](media/IMAGEN4.png)
+![](media/IMAGEN6.png)
 
   
 Para que el Arranque Seguro acepte el módulo es necesario inscribir el certificado público en la lista de Claves del Propietario de la Máquina (MOK) con “sudo mokutil --import MOK.der”.  
 Una vez realizado todo esto se procede a reiniciar la PC e interactuar con el MOK management.  
 
-![](media/IMAGEN5.png)
+![](media/IMAGEN7.png)
 
   
 Se selecciona “Enroll MOK”. Algunos de los pasos subsiguientes no van a ser dejados por escrito porque la imagen es lo suficientemente explicativa.  
 
-![Perform MOK management](media/IMAGEN6.png)
+![Perform MOK management](media/IMAGEN8.png)
 
   
 
-![](media/IMAGEN7.png)
+![](media/IMAGEN9.png)
 
   
 En este paso intermedio es necesario introducir la clave que se había definido previamente, a continuación de ello se debe hacer reboot.  
 
-![](media/IMAGEN8.png)
+![](media/IMAGEN10.png)
 
   
 Una vez cumplido todo esto es posible cargar el módulo y firmado con “sudo insmod tmnc.ko”. Para este ejemplo se introduce el módulo y se retira inmediatamente para mostrar la entrada y la salida del mismo en los registros de kernel con “sudo dmesg | tail” donde “| tail” es usado para mostrar solo la cola (o parte final) de todo el mensaje que se imprime por consola.  
 
-![Cargado de módulo en kernel](media/IMAGEN9.png)
+![Cargado de módulo en kernel](media/IMAGEN11.png)
 
   
 
-![](media/IMAGEN10.png)
+![](media/IMAGEN12.png)
 
   
 Finalmente se carga una última vez para poder acceder desde lsmod (para modinfo no es necesario insertar el módulo).
